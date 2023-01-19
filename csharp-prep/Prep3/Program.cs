@@ -23,25 +23,35 @@ class Program
             Console.ReadLine();
 
         {
-            
-        }
-            
-        do
+        if(input == "Diplay")
         {
-         Console.WriteLine("please select one of the following choices");
+            System.Console.WriteLine($"{input}:");
+        }
+        }
+        
+       do
+       {
+        Console.WriteLine("please select one of the following choices");
          Console.WriteLine("1. write");
          Console.WriteLine("2. Display");
          Console.WriteLine("3. Load");
          Console.WriteLine("4. Save");
          Console.WriteLine("5. Quit");
-
-        
-        Console.WriteLine("What would you like to do today? ");
-         string input1 = Console.ReadLine();
-        } while (true); 
-        }
-    }
-    
-
-    
+            Console.WriteLine("What would you like to do today? ");
+        string input1 = Console.ReadLine();
+       } while (true);
+       {
+        }   
+    }       
+             
 }
+        
+        
+         
+        
+    
+        
+    
+       
+
+    
