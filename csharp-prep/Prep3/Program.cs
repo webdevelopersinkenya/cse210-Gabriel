@@ -11,42 +11,54 @@ class Program
          Console.WriteLine("4. Save");
          Console.WriteLine("5. Quit");
 
-        Console.WriteLine("What would you like to do today? ");
-         string input = Console.ReadLine();
+        string table = "What would you like to do today? ";
+        string Values = " Please  choose from the Values 1, 2, 3, 4, 5 for your actions:";
+        Console.WriteLine(table);
+        Console.WriteLine(Values);
+        string UserValue = Console.ReadLine();
 
-        if (input == "write")
+        if (UserValue == " 1")
         {
-            Console.WriteLine($" If I had one thing I could do today what would it be?  ");
-            string Anwser =  Console.ReadLine();
+          string message = "What was the best part of the day today? ";
+          Console.WriteLine(message);
+        
+        }
+        else if(UserValue == " 2")
+        {
+            string message = " What part of the day did you love?";
+            Console.WriteLine(message);
             
-            Console.WriteLine($"What was the best part of my day? ");
-            Console.ReadLine();
+        }
+        else if(UserValue == "3")
+        {
+        string message = "What would you like to do with your information";
+        Console.WriteLine(message);
+        
+        }
+        else if(UserValue == "4")
+        {
+            string message = "Do you want to SAVE  OR CONTINUE? ";
+            Console.WriteLine(message);
+        
+        }
+        else if(UserValue == "5")
+         {
+            string message = "Do you wish to Quit?";
+            Console.WriteLine(message);
+            
+         }
+        
+        else
+        {
+          string message =  "Sorry I dont understand your type value:";
+          Console.WriteLine(message);
+        }
+          Console.ReadLine();
 
-        {
-        if(input == "Diplay")
-        {
-            System.Console.WriteLine($"{input}:");
-        }
-        }
-        
-       do
-       {
-        Console.WriteLine("please select one of the following choices");
-         Console.WriteLine("1. write");
-         Console.WriteLine("2. Display");
-         Console.WriteLine("3. Load");
-         Console.WriteLine("4. Save");
-         Console.WriteLine("5. Quit");
-            Console.WriteLine("What would you like to do today? ");
-        string input1 = Console.ReadLine();
-       } while (true);
-       {
-        }   
-    }       
-             
-}
-        
-        
+    }   
+
+
+}       
          
         
     
