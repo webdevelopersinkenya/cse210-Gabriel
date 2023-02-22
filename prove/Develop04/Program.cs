@@ -1,134 +1,127 @@
 using System;
-namespace JournalProgram
+using System.Threading;
+
+namespace MindfulnessProgram
 {
-    public class Entry
-    {
-        public DateTime Date { get; set; }
-        public string Prompt { get; set; }
-        public string Response { get; set; }
-
-        public Entry(DateTime date, string prompt, string response)
-        {
-            Date = date;
-            Prompt = prompt;
-            Response = response;
-        }
-    }
-
-    public class Journal
-    {
-        private List<Entry> entries = new List<Entry>();
-        private Random random = new Random();
-
-        public void WriteEntry()
-        {
-            string[] prompts = { "Who was the most interesting person I interacted with today?", "What was the best part of my day?", "How did I see the hand of the Lord in my life today?", "What was the strongest emotion I felt today?", "If I had one thing I could do over today, what would it be?" };
-
-            string prompt = prompts[random.Next(prompts.Length)];
-            Console.WriteLine(prompt);
-            string response = Console.ReadLine();
-
-            Entry entry = new Entry(DateTime.Now, prompt, response);
-            entries.Add(entry);
-        }
-
-        public void DisplayJournal()
-        {
-            foreach (Entry entry in entries)
-            {
-                Console.WriteLine($"{entry.Date.ToString("dd/MM/yyyy")}\nPrompt: {entry.Prompt}\nResponse: {entry.Response}\n");
-            }
-        }
-
-        public void SaveJournal()
-        {
-            Console.Write("Enter filename to save journal: ");
-            string filename = Console.ReadLine();
-            using (StreamWriter sw = new StreamWriter(filename))
-            {
-                foreach (Entry entry in entries)
-                {
-                    sw.WriteLine($"{entry.Date.ToString("dd/MM/yyyy")},{entry.Prompt},{entry.Response}");
-                }
-            }
-            Console.WriteLine("Journal saved.");
-        }
-
-        public void LoadJournal()
-        {
-            Console.Write("Enter filename to load journal: ");
-            string filename = Console.ReadLine();
-            if (File.Exists(filename))
-            {
-                entries.Clear();
-                using (StreamReader sr = new StreamReader(filename))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        string line = sr.ReadLine();
-                        string[] values = line.Split(',');
-                        DateTime date = DateTime.ParseExact(values[0], "dd/MM/yyyy", null);
-                        Entry entry = new Entry(date, values[1], values[2]);
-                        entries.Add(entry);
-                    }
-                }
-                Console.WriteLine("Journal loaded.");
-            }
-            else
-            {
-                Console.WriteLine("File not found.");
-            }
-        }
-    }
-
-    public class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            Journal journal = new Journal();
-            int choice = 0;
+            Console.WriteLine("Welcome to the Mindfulness Program!");
+            Console.WriteLine();
 
             while (true)
-            
             {
-                Console.WriteLine("Journal Program");
-                Console.WriteLine("---------------------");
-                Console.WriteLine("1. Write a new entry");
-                Console.WriteLine("2. Display the journal");
-                Console.WriteLine("3. Save the journal to a file");
-                Console.WriteLine("4. Load the journal from a file");
-                Console.WriteLine("5. Exit");
-                Console.Write("Enter choice: ");
+                Console.WriteLine("Select an activity:");
+                Console.WriteLine("1. Breathing");
+                Console.WriteLine("2. Reflection");
+                Console.WriteLine("3. Listing");
+                Console.WriteLine("0. Quit");
+                Console.WriteLine();
 
-                if (int.TryParse(Console.ReadLine(), out choice))
+                string input = Console.ReadLine();
+                Console.WriteLine();
+
+                switch (input)
                 {
-                    switch (choice)
-                    {
-                        case 1:
-                            journal.WriteEntry();
-                            break;
-                        case 2:
-                            journal.DisplayJournal();
-                            break;
-                        case 3:
-                            journal.SaveJournal();
-                            break;
-                        case 4:
-                            journal.LoadJournal();
-                            break;
-                        case 5:
-                            Console.WriteLine("Exiting program.");
-                            break;
-                        default:
-                            Console.WriteLine("Invalid choice.");
-                            break;
-                    }
+                    case "1":
+                        BreathingActivity breathing = new BreathingActivity();
+                        breathing.Run();
+                        break;
+
+                    case "2":
+                        ReflectionActivity reflection = new ReflectionActivity();
+                        reflection.Run();
+                        break;
+
+                    case "3":
+                        ListingActivity listing = new ListingActivity();
+                        listing.Run();
+                        break;
+
+                    case "0":
+                        Console.WriteLine("Thank you for using the Mindfulness Program. Goodbye!");
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid selection. Please try again.");
+                        break;
                 }
-                else
-                {
-                    Console.WriteLine("Invalid input. Please enter an event");
-                }
+
+                Console.WriteLine();
             }
         }
     }
-}
+
+    class MindfulnessActivity : WritingAssignment
+    {
+        protected int duration;
+
+        public MindfulnessActivity(string name, string description) : base(name, description)
+        {
+            duration = 0;
+        }
+
+        protected void DisplayStartingMessage()
+        {
+            Console.WriteLine("Starting " + name + " activity.");
+            Console.WriteLine(description);
+            Console.WriteLine();
+
+            Console.WriteLine("Please enter the duration of the activity in seconds:");
+            duration = int.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.WriteLine("Preparing to begin in:");
+            Countdown(3);
+        }
+
+        protected void DisplayEndingMessage()
+        {
+            Console.WriteLine("Great job! You have completed the " + name + " activity.");
+            Console.WriteLine("Total time: " + duration + " seconds.");
+            Console.WriteLine();
+
+            Console.WriteLine("Taking a moment to reflect...");
+            Countdown(3);
+        }
+
+        protected void Countdown(int seconds)
+        {
+            for (int i = seconds; i >= 1; i--)
+            {
+                Console.Write(i + " ");
+                Thread.Sleep(1000);
+            }
+
+            Console.WriteLine();
+        }
+    }
+
+    class BreathingActivity : MindfulnessActivity
+    {
+        public BreathingActivity() : base("Breathing", "This activity will help you relax by walking you through breathing in and out slowly. Clear your mind and focus on your breathing.")
+        {
+        }
+
+        public void Run()
+        {
+            DisplayStartingMessage();
+
+            for (int i = 0; i < duration; i += 4)
+            {
+                Console.WriteLine("Breathe in...");
+                Countdown(2);
+
+                Console.WriteLine("Breathe out...");
+                Countdown(2);
+            }
+
+            DisplayEndingMessage();
+        }
+    }
+
+    class ReflectionActivity : MindfulnessActivity
+    {
+        private string[] prompts = { "Think of a time when you stood up for someone else.", "Think of a time when you did something really difficult.", "Think of a time when you helped someone in need.", "Think of a time when you did something truly selfless." };
+        private string[] questions = { "Why was this experience meaningful to you?", "Have you ever done anything like this before?", "How did you get started?", "How did you feel when it was complete?", "What made this time different than other times when you were not as successful?", "What is your favorite thing about
